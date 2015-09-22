@@ -4,6 +4,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Maker;
+use App\Vehicle;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateMakerRequest;
 
@@ -93,7 +94,21 @@ class MakerController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+        $maker = Maker::find($id);
+        if (!$maker)
+        {
+            return response()->json(['error message'=>'This maker does not exist','code'=>404],404);
+        }
+
+        $vehicle = $maker->vehicles;
+        if (sizeof($vehicle) > 0)
+        {
+            return response()->json(['error message'=>'This maker has vehicles associated. Delete his vehicles first.','code'=>409],409);
+        }
+
+        $maker->delete();
+
+        return response()->json(['message' => 'The maker has been deleted'],200);
 	}
 
 }
