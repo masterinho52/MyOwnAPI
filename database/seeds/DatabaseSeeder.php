@@ -1,9 +1,11 @@
 <?php
 
-    use App\Maker;
+
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Maker;
+use App\User;
 
 class DatabaseSeeder extends Seeder {
 
@@ -16,10 +18,12 @@ class DatabaseSeeder extends Seeder {
 	{
         DB::statement('SET FOREIGN_KEY_CHECKS =0');
         Maker::truncate();
+        User::truncate();
 		Model::unguard();
 
 		$this->call('MakersSeed');
         $this->call('VehiclesSeed');
+        $this->call('UsersSeed');
 	}
 
 }
